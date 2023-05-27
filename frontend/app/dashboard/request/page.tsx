@@ -41,20 +41,15 @@ const RequestPage = () => {
       patient_dni: Yup.string().required("Required"), */
     }),
     onSubmit: (values) => {
-      FileStorageService.uploadFile(image).then((res) => {
-        console.log(res.data);
-      });
-      console.log(values);
-      /* RequestsService.registerRequest(
+      RequestsService.registerRequest(
         values.receiver_clinic_id,
         values.message,
-        values.file_url,
+        image,
         values.patient_name,
         values.patient_surname,
         values.patient_dni
-      ).then((res) => {
-        router.push("/dashboard");
-      }); */
+      );
+      console.log(values);
     },
   });
 

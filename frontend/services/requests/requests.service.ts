@@ -29,13 +29,13 @@ const RequestsService = {
   registerRequest: (
     receiver_clinic_id: number,
     message: string,
-    file_url: any,
+    image: any,
     patient_name: string,
     patient_surname: string,
     patient_dni: string
   ) => {
     let formData = new FormData();
-    formData.append("file", file_url);
+    formData.append("file", image);
     formData.append("receiver_clinic_id", receiver_clinic_id.toString());
     formData.append("message", message);
     formData.append("patient[name]", patient_name);

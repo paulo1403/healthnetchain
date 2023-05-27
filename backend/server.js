@@ -314,7 +314,7 @@ function createRequest(
 
 app.post("/api/requests", verifyToken, upload.single("file"), (req, res) => {
   const clinic_id = req.user.clinic.id;
-  const { receiver_clinic_id, message, file_url, patient } = req.body;
+  const { receiver_clinic_id, message, patient } = req.body;
   if (clinic_id === receiver_clinic_id) {
     return res.status(409).json({
       message: `Transmitter clinic is the same as Receiver clinic`,
@@ -406,10 +406,10 @@ app.get("/api/requests", verifyToken, (req, res) => {
     }
     const requests = rows;
     const transmittedRequests = requests.filter(
-      (request) => (request.transmitter_clinic_id = clinic_id)
+      (request) => request.transmitter_clinic_id === clinic_id
     );
     const receivedRequests = requests.filter(
-      (request) => (request.receiver_clinic_id = clinic_id)
+      (request) => request.receiver_clinic_id === clinic_id
     );
     res.json({
       message: "success",
