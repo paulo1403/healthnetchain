@@ -2,6 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import RequestsService from "@/services/requests/requests.service";
+import Sidebar from "@/components/dashboard/Sidebar";
 
 interface IUser {
   username: string;
@@ -51,11 +52,6 @@ const page = () => {
     }
   }, []);
 
-  const logOut = () => {
-    localStorage.removeItem("user");
-    router.push("/login");
-  };
-
   React.useEffect(() => {
     RequestsService.getRequests().then((res) => {
       setReceivedRequests(res.data.receivedRequests);
@@ -64,11 +60,12 @@ const page = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center flex-column h-screen bg-gray-200">
-      <div className="bg-white p-16 rounded shadow-2xl w-2/3">
-        <div className="flex justify-between items-center mb-10">
+    <div className="flex w-screen bg-white">
+      <Sidebar clinic={clinic} />
+      <div className="container p-5 bg-white w-100">
+        <div className="flex items-center justify-between mb-10">
           <h2 className="text-2xl font-bold text-gray-800">
-            Dashboard - {clinic?.name}
+            Panel Administrativo
           </h2>
           <img
             src={clinic?.logo || "/clinic.png"}
@@ -77,24 +74,12 @@ const page = () => {
             height={150}
           />
         </div>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <div className="bg-indigo-500 rounded-full h-8 w-8"></div>
-            <div className="ml-4 text-gray-700 font-bold">{user?.username}</div>
-          </div>
-          <button
-            className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-700"
-            onClick={logOut}
-          >
-            Cerrar Sesión
-          </button>
-        </div>
         <div className="">
-          <h2 className="text-1xl font-bold text-gray-800 mt-10">
+          <h2 className="mt-10 font-bold text-gray-800 text-1xl">
             Lista de Solicitudes Recibidas
           </h2>
         </div>
-        <table className="table-auto w-full mt-10 mb-10">
+        <table className="w-full mt-10 mb-10 table-auto">
           <thead>
             <tr>
               <th className="px-4 py-2">Fecha</th>
@@ -107,14 +92,14 @@ const page = () => {
             {receivedRequests.length > 0 ? (
               receivedRequests.map((request) => (
                 <tr key={request.id}>
-                  <td className="border px-4 py-2">{request.created_at}</td>
-                  <td className="border px-4 py-2">{request.message}</td>
-                  <td className="border px-4 py-2">
+                  <td className="px-4 py-2 border">{request.created_at}</td>
+                  <td className="px-4 py-2 border">{request.message}</td>
+                  <td className="px-4 py-2 border">
                     {request.transmitter_clinic_id}
                   </td>
-                  <td className="border px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-center border">
                     <button
-                      className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-700"
+                      className="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-700"
                       onClick={() =>
                         router.push(`/dashboard/request/${request.id}`)
                       }
@@ -126,7 +111,7 @@ const page = () => {
               ))
             ) : (
               <tr className="text-center">
-                <td className="border px-4 py-2">
+                <td className="px-4 py-2 border">
                   No hay solicitudes recibidas
                 </td>
               </tr>
@@ -134,17 +119,17 @@ const page = () => {
           </tbody>
         </table>
         <div className="flex justify-between">
-          <h2 className="text-1xl font-bold text-gray-800 mt-10">
+          <h2 className="mt-10 font-bold text-gray-800 text-1xl">
             Lista de Solicitudes Realizadas
           </h2>
           <button
-            className="bg-indigo-500 text-white px-4 rounded hover:bg-indigo-700"
+            className="px-4 text-white bg-indigo-500 rounded hover:bg-indigo-700"
             onClick={() => router.push("/dashboard/request")}
           >
             Nueva Solicitud
           </button>
         </div>
-        <table className="table-auto w-full mt-10">
+        <table className="w-full mt-10 table-auto">
           <thead>
             <tr>
               <th className="px-4 py-2">Fecha</th>
@@ -157,14 +142,14 @@ const page = () => {
             {transmittedRequests.length > 0 ? (
               transmittedRequests.map((request) => (
                 <tr key={request.id}>
-                  <td className="border px-4 py-2">{request.created_at}</td>
-                  <td className="border px-4 py-2">{request.message}</td>
-                  <td className="border px-4 py-2">
+                  <td className="px-4 py-2 border">{request.created_at}</td>
+                  <td className="px-4 py-2 border">{request.message}</td>
+                  <td className="px-4 py-2 border">
                     {request.transmitter_clinic_id}
                   </td>
-                  <td className="border px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-center border">
                     <button
-                      className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-700"
+                      className="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-700"
                       onClick={() =>
                         router.push(`/dashboard/request/${request.id}`)
                       }
@@ -176,7 +161,7 @@ const page = () => {
               ))
             ) : (
               <tr className="text-center">
-                <td className="border px-4 py-2">
+                <td className="px-4 py-2 border">
                   No hay solicitudes recibidas
                 </td>
               </tr>
