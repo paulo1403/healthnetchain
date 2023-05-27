@@ -16,7 +16,7 @@ const saltRounds = 10;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads/"); //null for no error
+    cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -464,16 +464,41 @@ app.get("/api/patients/:id", verifyToken, (req, res) => {
   });
 });
 
-app.post("/api/file/upload", verifyToken, (req, res) => {
-  const upload = multer({ storage: storage }).single("file");
-  upload(req, res, function (err) {
+app.post("/api/file/upload", verifyToken, upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({
+      message: "No file uploaded",
+    });
+  }
+  res.json({
+    message: "success",
+    data: req.file,
+  });
+});
+
+app.get("/api/file/list", verifyToken, (req, res) => {
+  fs.readdir("./uploads", (err, files) => {
     if (err) {
       res.status(400).json({ error: err.message });
       return;
     }
     res.json({
       message: "success",
-      data: req.file,
+      data: files,
+    });
+  });
+});
+
+app.delete("/api/file/delete/:filename", verifyToken, (req, res) => {
+  const { filename } = req.params;
+  const file = `./uploads/${filename}`;
+  fs.unlink(file, (err) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
     });
   });
 });

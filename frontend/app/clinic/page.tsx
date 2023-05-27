@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import ClinicsService from "@/services/clinics/clinics.service";
 import AuthService from "@/services/auth/auth.service";
-import RegisterClinicModal from "./RegisterClinicModal";
+import RegisterClinicModal from "../../components/clinic/RegisterClinicModal";
 
 interface IClinic {
   clinic_id: number;
@@ -27,32 +27,32 @@ const ClinicsDashboard = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-200">
-      <div className="bg-white p-16 rounded shadow-2xl w-2/3">
-        <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-bold mb-10 text-gray-800">
+    <div className="flex items-center justify-center h-screen bg-gray-200">
+      <div className="w-2/3 p-16 bg-white rounded shadow-2xl">
+        <div className="flex items-center justify-between">
+          <h2 className="mb-10 text-3xl font-bold text-gray-800">
             Lista de Clínicas
           </h2>
           <button
-            className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-700"
+            className="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-700"
             onClick={() => router.push("/login")}
           >
             Ir a login
           </button>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className="bg-indigo-500 rounded-full h-8 w-8"></div>
-            <div className="ml-4 text-gray-700 font-bold">Clinic Name</div>
+            <div className="w-8 h-8 bg-indigo-500 rounded-full"></div>
+            <div className="ml-4 font-bold text-gray-700">Clinic Name</div>
           </div>
           <button
-            className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-700"
+            className="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-700"
             onClick={() => setShowModalClinic(true)}
           >
             Registrar Clínica
           </button>
         </div>
-        <table className="table-auto w-full mt-3">
+        <table className="w-full mt-3 table-auto">
           <thead>
             <tr>
               <th className="px-4 py-2 text-black">Nombre</th>
@@ -65,21 +65,21 @@ const ClinicsDashboard = () => {
           <tbody>
             {clinics.map((clinic) => (
               <tr key={clinic.clinic_id}>
-                <td className="border px-4 py-2 text-gray-700">
+                <td className="px-4 py-2 text-gray-700 border">
                   {clinic.clinic_name}
                 </td>
-                <td className="border px-4 py-2 text-gray-700">
+                <td className="px-4 py-2 text-gray-700 border">
                   {clinic.clinic_address}
                 </td>
-                <td className="border px-4 py-2 text-gray-700">
+                <td className="px-4 py-2 text-gray-700 border">
                   {clinic.clinic_phone}
                 </td>
-                <td className="border px-4 py-2 text-gray-700">
+                <td className="px-4 py-2 text-gray-700 border">
                   {clinic.clinic_email}
                 </td>
-                <td className="border px-4 py-2 text-gray-700">
+                <td className="px-4 py-2 text-gray-700 border">
                   <button
-                    className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-700"
+                    className="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-700"
                     onClick={() => router.push(`/clinics/${clinic.clinic_id}`)}
                   >
                     Ver

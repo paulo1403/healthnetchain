@@ -20,6 +20,8 @@ interface IClinic {
 const RequestPage = () => {
   const router = useRouter();
   const [clinics, setClinics] = React.useState<IClinic[]>([]);
+  const [image, setImage] = React.useState<any>("");
+  const [messageFile, setMessageFile] = React.useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -31,14 +33,17 @@ const RequestPage = () => {
       patient_dni: "",
     },
     validationSchema: Yup.object({
-      receiver_clinic_id: Yup.string().required("Required"),
+      /* receiver_clinic_id: Yup.string().required("Required"),
       message: Yup.string().required("Required"),
       file_url: Yup.string().required("Required"),
       patient_name: Yup.string().required("Required"),
       patient_surname: Yup.string().required("Required"),
-      patient_dni: Yup.string().required("Required"),
+      patient_dni: Yup.string().required("Required"), */
     }),
     onSubmit: (values) => {
+      FileStorageService.uploadFile(image).then((res) => {
+        console.log(res.data);
+      });
       console.log(values);
       /* RequestsService.registerRequest(
         values.receiver_clinic_id,
@@ -59,28 +64,24 @@ const RequestPage = () => {
     });
   }, []);
 
-  const handleFileChange = async (e: any) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    const res = await FileStorageService.upload(formData);
-    formik.setFieldValue("file_url", res.data.data);
-    console.log(res.data.data);
+  const handleFileChange = (e: any) => {
+    console.log(e.target.files[0]);
+    setImage(e.target.files[0]);
   };
 
   return (
-    <div className="flex justify-center items-center flex-column h-screen bg-gray-200">
-      <div className="bg-white p-16 rounded shadow-2xl w-2/3">
-        <h3 className="text-left text-1xl font-bold">Nueva Solicitud</h3>
+    <div className="flex items-center justify-center h-screen bg-gray-200 flex-column">
+      <div className="w-2/3 p-16 bg-white rounded shadow-2xl">
+        <h3 className="font-bold text-left text-1xl">Nueva Solicitud</h3>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
           onClick={() => router.back()}
         >
           Volver
         </button>
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-col items-start w-full gap-2 mb-3">
-            <label className="text-black text-sm font-medium">
+            <label className="text-sm font-medium text-black">
               Clinica Destino
             </label>
             <select
@@ -88,7 +89,7 @@ const RequestPage = () => {
               name="receiver_clinic_id"
               onChange={formik.handleChange}
               value={formik.values.receiver_clinic_id}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
             >
               <option value="0">Seleccione una clinica</option>
               {clinics.map((clinic) => (
@@ -105,23 +106,23 @@ const RequestPage = () => {
               )}
           </div>
           <div className="flex flex-col items-start w-full gap-2 mb-3">
-            <label className="text-black text-sm font-medium">Mensaje</label>
+            <label className="text-sm font-medium text-black">Mensaje</label>
             <textarea
               id="message"
               name="message"
               onChange={formik.handleChange}
               value={formik.values.message}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
             />
             {formik.errors.message && formik.touched.message && (
               <span className="text-red-500">{formik.errors.message}</span>
             )}
           </div>
           <div className="flex flex-col items-start w-full gap-2 mb-3">
-            <label className="text-black text-sm font-medium">
+            <label className="text-sm font-medium text-black">
               Pdf de la solicitud
             </label>
-            <label className="text-black text-sm font-medium">
+            <label className="text-sm font-medium text-black">
               Descargar formato de solicitud y subirlo con los datos del
               paciente autorizando la transferencia de datos
               <a className="text-blue-500" href="/termsandcond.pdf" download>
@@ -135,14 +136,14 @@ const RequestPage = () => {
               type="file"
               onChange={handleFileChange}
               value={formik.values.file_url}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
             />
             {formik.errors.file_url && formik.touched.file_url && (
               <span className="text-red-500">{formik.errors.file_url}</span>
             )}
           </div>
           <div className="flex flex-col items-start w-full gap-2 mb-3">
-            <label className="text-black text-sm font-medium">
+            <label className="text-sm font-medium text-black">
               Nombre del paciente
             </label>
             <input
@@ -151,14 +152,14 @@ const RequestPage = () => {
               type="text"
               onChange={formik.handleChange}
               value={formik.values.patient_name}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
             />
             {formik.errors.patient_name && formik.touched.patient_name && (
               <span className="text-red-500">{formik.errors.patient_name}</span>
             )}
           </div>
           <div className="flex flex-col items-start w-full gap-2 mb-3">
-            <label className="text-black text-sm font-medium">
+            <label className="text-sm font-medium text-black">
               Apellido del paciente
             </label>
             <input
@@ -167,7 +168,7 @@ const RequestPage = () => {
               type="text"
               onChange={formik.handleChange}
               value={formik.values.patient_surname}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
             />
             {formik.errors.patient_surname &&
               formik.touched.patient_surname && (
@@ -177,7 +178,7 @@ const RequestPage = () => {
               )}
           </div>
           <div className="flex flex-col items-start w-full gap-2 mb-3">
-            <label className="text-black text-sm font-medium">
+            <label className="text-sm font-medium text-black">
               DNI del paciente
             </label>
             <input
@@ -186,7 +187,7 @@ const RequestPage = () => {
               type="text"
               onChange={formik.handleChange}
               value={formik.values.patient_dni}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
             />
             {formik.errors.patient_dni && formik.touched.patient_dni && (
               <span className="text-red-500">{formik.errors.patient_dni}</span>
@@ -195,7 +196,7 @@ const RequestPage = () => {
           <div className="flex justify-center w-full">
             <button
               type="submit"
-              className="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="w-full px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
             >
               Crear
             </button>
