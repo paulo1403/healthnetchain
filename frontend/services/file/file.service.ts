@@ -16,9 +16,7 @@ const FileStorageService = {
     });
   },
   downloadFile: (file: any) => {
-    let formData = new FormData();
-    formData.append("file", file);
-    return axios.post(API_URL + "file/download", formData, {
+    return axios.get(API_URL + "file/download/" + file, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

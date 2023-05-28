@@ -19,12 +19,16 @@ const RequestsService = {
       },
     });
   },
-  updateStatus: (id: string, status: string) => {
-    return axios.put(API_URL + "requests/" + id + "?status=" + status, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  updateRequest: (id: string, status: string) => {
+    return axios.put(
+      API_URL + "requests/" + id + "?status=" + status,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   },
   registerRequest: (
     receiver_clinic_id: number,

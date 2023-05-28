@@ -432,6 +432,7 @@ app.put("/api/requests/:id", verifyToken, (req, res) => {
   db.run(
     `UPDATE requests SET status = ? WHERE id = ?`,
     [requestStatus[status], request_id],
+    console.log(requestStatus[status]),
     function (err) {
       if (err) {
         res.status(400).json({ error: err.message });
