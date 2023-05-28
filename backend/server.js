@@ -5,6 +5,7 @@ const sqlite3 = require("sqlite3").verbose();
 const bycrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const { saveUpload } = require("./services/ipfs.service");
 
 const TOKEN_KEY = "secretK3y";
 const requestStatus = {
@@ -510,6 +511,20 @@ app.get("/api/file/download/:filename", verifyToken, (req, res) => {
   res.download(file);
 });
 
+app.post("/api/test", upload.single("file"), async (req, res) => {
+  try {
+
+    const file = req.file;
+    const parsedData = await saveUpload(file, res)
+    return res.status(200).json({
+      parsedData
+    });
+  } catch(error) {
+    res.status(500).json({error: "error"})
+  }
+});
+
+/* Server. Don't Touch it */
 app.listen(5000, () => {
   console.log("Server has started on port 5000");
 });
