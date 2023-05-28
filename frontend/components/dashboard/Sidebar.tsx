@@ -6,7 +6,7 @@ import { BsFillInboxesFill } from "react-icons/bs";
 import { BiLogOut, BiTimer } from "react-icons/bi";
 
 interface ISidebarProps {
-  clinic: any;
+  clinic?: any;
 }
 
 export default function Sidebar({ clinic }: ISidebarProps) {
