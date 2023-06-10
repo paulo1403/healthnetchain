@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-200">
-      <div className="w-1/5 p-8 bg-white rounded shadow-2xl">
+      <div className="p-8 bg-white rounded shadow-2xl w-96">
         <h2 className="mb-10 text-3xl font-bold text-gray-800">
           Iniciar Sesión
         </h2>
