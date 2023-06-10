@@ -2,6 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import RequestsService from "@/services/requests/requests.service";
+import ClinicsService from "@/services/clinics/clinics.service";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { IoMdArrowBack } from "react-icons/io";
 
@@ -19,11 +20,28 @@ const page = () => {
   const [recievedRequests, setRecievedRequests] = React.useState<IRequests[]>(
     []
   );
+  const [clinics, setClinics] = React.useState<any>([]);
   const router = useRouter();
+
+  const findClinicNamesByRequest = (id: number) => {
+    const clinicNames: string[] = [];
+    clinics.find((clinic: any) => {
+      if (clinic.clinic_id === id) {
+        clinicNames.push(clinic.clinic_name);
+      }
+    });
+    return clinicNames;
+  };
 
   React.useEffect(() => {
     RequestsService.getRequests().then((res) => {
       setRecievedRequests(res.data.receivedRequests);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    ClinicsService.getClinics().then((res) => {
+      setClinics(res.data.data);
     });
   }, []);
 
@@ -71,7 +89,7 @@ const page = () => {
                       {request.message}
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {request.transmitter_clinic_id}
+                      {findClinicNamesByRequest(request.transmitter_clinic_id)}
                     </td>
                     <td className="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
                       <button

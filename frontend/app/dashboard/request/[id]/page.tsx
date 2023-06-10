@@ -55,6 +55,10 @@ const Request = () => {
     }
   }, [request]);
 
+  useEffect(() => {
+    console.log(request);
+  }, [request]);
+
   const handleDownloadRequestFile = (file: any) => {
     const url = file.replace("uploads", "");
     const filename = url.substring(1);

@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import RequestsService from "@/services/requests/requests.service";
 import ClinicsService from "@/services/clinics/clinics.service";
 import FileStorageService from "@/services/file/file.service";
+import { IoMdArrowBack } from "react-icons/io";
 
 interface IClinic {
   clinic_id: number;
@@ -33,12 +34,11 @@ const RequestPage = () => {
       patient_dni: "",
     },
     validationSchema: Yup.object({
-      /* receiver_clinic_id: Yup.string().required("Required"),
+      receiver_clinic_id: Yup.string().required("Required"),
       message: Yup.string().required("Required"),
-      file_url: Yup.string().required("Required"),
       patient_name: Yup.string().required("Required"),
       patient_surname: Yup.string().required("Required"),
-      patient_dni: Yup.string().required("Required"), */
+      patient_dni: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
       RequestsService.registerRequest(
@@ -48,8 +48,11 @@ const RequestPage = () => {
         values.patient_name,
         values.patient_surname,
         values.patient_dni
-      );
-      console.log(values);
+      ).then((res) => {
+         if (res.status === 200) {
+          router.push("/dashboard/request");
+        }
+      });
     },
   });
 
@@ -60,20 +63,19 @@ const RequestPage = () => {
   }, []);
 
   const handleFileChange = (e: any) => {
-    console.log(e.target.files[0]);
     setImage(e.target.files[0]);
   };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-200 flex-column">
       <div className="w-2/3 p-16 bg-white rounded shadow-2xl">
-        <h3 className="font-bold text-left text-1xl">Nueva Solicitud</h3>
-        <button
-          className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-          onClick={() => router.back()}
-        >
-          Volver
-        </button>
+        <div className="flex items-center gap-2 mb-8">
+          <IoMdArrowBack
+            className="text-2xl cursor-pointer"
+            onClick={() => router.back()}
+          />
+          <span className="text-2xl font-bold">Nueva Solicitud</span>
+        </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-col items-start w-full gap-2 mb-3">
             <label className="text-sm font-medium text-black">
@@ -84,9 +86,11 @@ const RequestPage = () => {
               name="receiver_clinic_id"
               onChange={formik.handleChange}
               value={formik.values.receiver_clinic_id}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-gray-800"
             >
-              <option value="0">Seleccione una clinica</option>
+              <option value="0" hidden>
+                Seleccione una clinica
+              </option>
               {clinics.map((clinic) => (
                 <option key={clinic.clinic_id} value={clinic.clinic_id}>
                   {clinic.clinic_name}
@@ -107,7 +111,7 @@ const RequestPage = () => {
               name="message"
               onChange={formik.handleChange}
               value={formik.values.message}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-gray-800"
             />
             {formik.errors.message && formik.touched.message && (
               <span className="text-red-500">{formik.errors.message}</span>
@@ -131,7 +135,7 @@ const RequestPage = () => {
               type="file"
               onChange={handleFileChange}
               value={formik.values.file_url}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-gray-800"
             />
             {formik.errors.file_url && formik.touched.file_url && (
               <span className="text-red-500">{formik.errors.file_url}</span>
@@ -147,7 +151,7 @@ const RequestPage = () => {
               type="text"
               onChange={formik.handleChange}
               value={formik.values.patient_name}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-gray-800"
             />
             {formik.errors.patient_name && formik.touched.patient_name && (
               <span className="text-red-500">{formik.errors.patient_name}</span>
@@ -163,7 +167,7 @@ const RequestPage = () => {
               type="text"
               onChange={formik.handleChange}
               value={formik.values.patient_surname}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-gray-800"
             />
             {formik.errors.patient_surname &&
               formik.touched.patient_surname && (
@@ -182,7 +186,7 @@ const RequestPage = () => {
               type="text"
               onChange={formik.handleChange}
               value={formik.values.patient_dni}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-green-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-gray-800"
             />
             {formik.errors.patient_dni && formik.touched.patient_dni && (
               <span className="text-red-500">{formik.errors.patient_dni}</span>
@@ -191,7 +195,7 @@ const RequestPage = () => {
           <div className="flex justify-center w-full">
             <button
               type="submit"
-              className="w-full px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
+              className="w-full px-4 py-2 font-bold text-white bg-gray-800 rounded hover:bg-slate-700 focus:outline-none focus:shadow-outline"
             >
               Crear
             </button>

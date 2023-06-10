@@ -67,6 +67,7 @@ const saveUpload = async (file, res) => {
         "Datos del contacto ",
         "Nombre: Maria Jara ",
         console.log(newStr);
+
       /*newStr.splice(newStr.length - 2, 2);
         let obj = {};
         for (let i = 0; i < newStr.length; i++) {
