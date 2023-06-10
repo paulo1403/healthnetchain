@@ -41,6 +41,14 @@ const page = () => {
               Solicitudes Realizadas
             </h2>
           </div>
+          <div>
+            <button
+              className="px-4 py-2 text-white bg-gray-800 rounded hover:bg-gray-700"
+              onClick={() => router.push("/dashboard/request")}
+            >
+              Crear Solicitud
+            </button>
+          </div>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
