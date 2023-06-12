@@ -151,7 +151,7 @@ const Request = () => {
               Aceptar
             </button>
             <button
-              className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
               onClick={() => {
                 RequestsService.updateRequest(id, "DENIED").then((res) => {
                   setMessage("El request ha sido rechazado correctamente");
