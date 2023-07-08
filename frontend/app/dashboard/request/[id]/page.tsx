@@ -55,14 +55,17 @@ const Request = () => {
     }
   }, [request]);
 
-  useEffect(() => {
-    console.log(request);
-  }, [request]);
-
   const handleDownloadRequestFile = (file: any) => {
     const url = file.replace("uploads", "");
     const filename = url.substring(1);
-    FileStorageService.downloadFile(filename);
+    FileStorageService.downloadFile(filename).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+    });
   };
 
   return (
@@ -159,6 +162,20 @@ const Request = () => {
               }}
             >
               Rechazar
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
+        {request?.status === "APROBADO" ? (
+          <div className="flex flex-row items-center w-full gap-2">
+            <button
+              className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              onClick={() => {
+                handleDownloadRequestFile("uploads" + "\\" + "data.json");
+              }}
+            >
+              Descargar
             </button>
           </div>
         ) : (

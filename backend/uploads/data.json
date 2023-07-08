@@ -1,0 +1,40 @@
+{
+   "parsedData":{
+      "mensaje":"Success",
+      "response":{
+         "Patient":{
+            "name":"Jesus Alberto Gonzales Duarez",
+            "dni":"12345677",
+            "gender":"Masculino",
+            "birthDate":"12/08/1999",
+            "address":"Avenida Las Américas 234, Comas",
+            "maritalStatus":"Soltero",
+            "contact":{
+               "name":"Maria Duarez",
+               "relationship":"Madre",
+               "phoneNumber":"+51995456258",
+               "email":"mduarez@live.in"
+            }
+         },
+         "AllergyIntolerance":{
+            "type":"Intolerancia",
+            "category":"Comida",
+            "criticality":"Alta",
+            "verificationStatus":"Presunto",
+            "lastOccurrence":"19/03/2018",
+            "participant":"Maria Duarez",
+            "reaction":{
+               "sustance":"Nueces",
+               "description":"Almuerzo conteniendo la sustancia",
+               "severity":"Moderada"
+            }
+         },
+         "Medication":{
+            "name":"Epinefrina",
+            "code":"A01AD01",
+            "totalVolume":"1ml",
+            "doseForm":"Ampolla"
+         }
+      }
+   }
+}
